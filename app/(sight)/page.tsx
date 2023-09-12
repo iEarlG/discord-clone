@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/InitialProfile";
 
+import { InitialModal } from "@/components/modals/InitialModal";
+
 const SightPage = async () => {
     const profile = await initialProfile();
 
@@ -21,8 +23,8 @@ const SightPage = async () => {
     }
     
     return ( 
-        <div>Create server: </div>
+        <InitialModal />
     );
 }
  
-export default SightPage;
+export default SightPage;   
