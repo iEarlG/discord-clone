@@ -13,9 +13,9 @@ datasource db {
 model Profile {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   userId String @unique
-  name String
+  name String?
   imageUrl String @db.String
-  email String @db.String
+  email String? @db.String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
