@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { FileUpload } from "@/components/FileUpload";
 
 const formSchema = z.object({
     name: z.string().min(1, { message: "Please enter a server name." }),
@@ -51,7 +52,21 @@ export const InitialModal = () => {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <div className="space-y-8 px-6">
                             <div className="flex items-center justify-center text-center">
-                                TODO: Image Upload
+                                <FormField 
+                                    control={form.control}
+                                    name="imageUrl"
+                                    render={({field}) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <FileUpload 
+                                                    endpoint="serverImage"
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
                             <FormField 
                                 control={form.control}
