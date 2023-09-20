@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import axios from "axios";
+
+import { useModalStore } from "@/hooks/useModalStore";
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -18,17 +19,14 @@ const formSchema = z.object({
     imageUrl: z.string().min(1, { message: "Please enter a server image." })
 });
 
-export const InitialModal = () => {
-    const [isMounted, setisMounted] = useState(false);
+export const CreateServerModal = () => {
     const router = useRouter();
-    
-    useEffect(() => {
-      setisMounted(true);
-    }, []);
-    
+    const { isOpen, onClose, type } = useModalStore();
+
+    const isModalOpen = isOpen && type === "createServer";
 
     const form = useForm({
-        resolver: zodResolver(formSchema),
+        resolver: zodResolver(formSchema),  
         defaultValues: {
             name: "",
             imageUrl: ""
@@ -42,18 +40,19 @@ export const InitialModal = () => {
 
             form.reset();
             router.refresh();
-            window.location.reload();
+            onClose();
         } catch (error) {
             console.log(error);
         }
     };
 
-    if (!isMounted) {
-        return null;
-    }
+    const handleClosed = () => {
+        form.reset();
+        onClose();
+    };
 
     return ( 
-        <Dialog open>
+        <Dialog open={isModalOpen} onOpenChange={handleClosed}>
             <DialogContent className="bg-white text-black p-0 overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-center text-2xl font-bold">Create your own server</DialogTitle>
