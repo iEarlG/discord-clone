@@ -42,7 +42,7 @@ export const FileUpload = ({ endpoint, value, onChange }: FileUploadProps) => {
                 onChange(res?.[0].url);
             }}
             onUploadError={(error: Error) => {
-                console.log(error);
+                console.log(error, "FILE UPLOAD ERROR");
             }}
         />
     );
