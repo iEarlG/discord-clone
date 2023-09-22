@@ -51,16 +51,20 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
             members: {
                 create: [
                     {
-                        profileId: profile.id   
+                        profileId: profile.id
                     }
                 ]
             }
         }
     });
 
-    return ( 
-        <div>InviteCodePage</div>
-    );
+    if (server) {
+        return (
+            redirect(`/servers/${server.id}`)
+        );
+    }
+
+   return null;
 }
  
 export default InviteCodePage;
