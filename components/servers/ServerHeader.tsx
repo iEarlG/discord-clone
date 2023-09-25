@@ -40,7 +40,10 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
                     </DropdownMenuItem>
                 )}
                 {isAdmin || isOwner && (
-                    <DropdownMenuItem className="text-sm px-3 py-2 cursor-pointer">
+                    <DropdownMenuItem 
+                        className="text-sm px-3 py-2 cursor-pointer"
+                        onClick={() => onOpen("Edit Server", {server})}
+                    >
                         Server Settings
                         <Settings className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
@@ -52,7 +55,8 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
                     </DropdownMenuItem>
                 )}
                 {isAdmin || isModerator || isGuest || isOwner && (
-                    <DropdownMenuItem className="text-indigo-600 dark:text-indigo-400 text-sm px-3 py-2 cursor-pointer"
+                    <DropdownMenuItem 
+                        className="text-indigo-600 dark:text-indigo-400 text-sm px-3 py-2 cursor-pointer"
                         onClick={() => onOpen("Invite", { server })}
                     >
                         Invite People
