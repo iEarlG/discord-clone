@@ -1,22 +1,31 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import axios from "axios";
+import { ChannelType } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useModalStore } from "@/hooks/useModalStore";
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { SelectContent, Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FileUpload } from "@/components/FileUpload";
 
 const formSchema = z.object({
-    name: z.string().min(1, { message: "Please enter a server name." }),
-    imageUrl: z.string().min(1, { message: "Please enter a server image." })
+    name: z.string().min(1, { 
+        message: "Please enter a channel name." 
+    }).refine(
+        name => name !== "general",
+        {
+            message: "Only one 'general' channel is allowed.",
+            path: ["name"]
+        }
+    ),
+    type: z.nativeEnum(ChannelType)
 });
 
 export const CreateChannelModal = () => {
@@ -29,7 +38,7 @@ export const CreateChannelModal = () => {
         resolver: zodResolver(formSchema),  
         defaultValues: {
             name: "",
-            imageUrl: ""
+            type: ChannelType.TEXT,
         }
     });
     const isLoading = form.formState.isSubmitting;
@@ -55,45 +64,61 @@ export const CreateChannelModal = () => {
         <Dialog open={isModalOpen} onOpenChange={handleClosed}>
             <DialogContent className="bg-white text-black p-0 overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
-                    <DialogTitle className="text-center text-2xl font-bold">Create your own server</DialogTitle>
-                    <DialogDescription className="text-center text-zinc-500">Give your server a personality. Add your server name & image. You can change it later.</DialogDescription>
+                    <DialogTitle className="text-center text-2xl font-bold">Create Channel</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <div className="space-y-8 px-6">
-                            <div className="flex items-center justify-center text-center">
-                                <FormField 
-                                    control={form.control}
-                                    name="imageUrl"
-                                    render={({field}) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <FileUpload 
-                                                    endpoint="serverImage"
-                                                    value={field.value}
-                                                    onChange={field.onChange}
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
                             <FormField 
                                 control={form.control}
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                                            Server Name 
+                                            Channel Name 
                                         </FormLabel>
                                         <FormControl>
                                             <Input 
                                                 disabled={isLoading}
                                                 className="text-black bg-zinc-300/50 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                                                placeholder="Enter a server name"
+                                                placeholder="Enter a channel name"
                                                 {...field}
                                             />
                                         </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField 
+                                control={form.control}
+                                name="type"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Channel Type</FormLabel>
+                                        <Select
+                                            disabled={isLoading}
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger className="bg-zinc-300/50 border-0 focus:ring-0 ring-offset-0 focus:ring-offset-0 text-black capitalize outline-none">
+                                                    <SelectValue 
+                                                        placeholder="Select a channel type" 
+                                                    />
+                                                </SelectTrigger>
+                                            </FormControl>  
+                                            <SelectContent>
+                                                {Object.values(ChannelType).map((type) => (
+                                                    <SelectItem 
+                                                        key={type}
+                                                        value={type}
+                                                        className="capitalize"
+                                                    >
+                                                        {type.toLocaleLowerCase()}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                         <FormMessage />
                                     </FormItem>
                                 )}
