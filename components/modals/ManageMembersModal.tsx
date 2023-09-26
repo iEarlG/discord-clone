@@ -33,6 +33,28 @@ export const ManageMembersModal = () => {
     
     const isModalOpen = isOpen && type === "Manage Members";
 
+    const onKicked = async (memberId: string) => {
+        try {
+            setLoadingID(memberId);
+
+            const url = qs.stringifyUrl({
+                url: `/api/members/${memberId}`,
+                query: {
+                    serverId: server?.id
+                }
+            });
+
+            const response = await axios.delete(url);
+
+            router.refresh();
+            onOpen("Manage Members", { server: response.data });
+        } catch (error) {
+            console.log(error, "Manage Member Modal");
+        } finally {
+            setLoadingID("");
+        }
+    };
+
     const onRoleChanged = async (memberId: string, role: MemberRole) => {
         try {
             setLoadingID(memberId);
@@ -40,8 +62,7 @@ export const ManageMembersModal = () => {
             const url = qs.stringifyUrl({
                 url: `/api/members/${memberId}`,
                 query: {
-                    serverId: server?.id,
-                    memberId,
+                    serverId: server?.id,   
                 }
             });
 
@@ -118,7 +139,7 @@ export const ManageMembersModal = () => {
                                                 </DropdownMenuPortal>
                                             </DropdownMenuSub>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem>
+                                            <DropdownMenuItem onClick={() => onKicked(member.id)}>
                                                 <UserX2 className="h-4 w-4 mr-2" />
                                                 Kick Member
                                             </DropdownMenuItem>
