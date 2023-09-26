@@ -34,7 +34,10 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 text-xs font-medium text-[#191413] dark:text-neutral-400 space-y-[2px]">
                 {isAdmin || isModerator || isOwner && (
-                    <DropdownMenuItem className="text-sm px-3 py-2 cursor-pointer">
+                    <DropdownMenuItem 
+                        className="text-sm px-3 py-2 cursor-pointer"
+                        onClick={() => onOpen("Create Channel", {server})}
+                    >
                         Create Channel
                         <Plus className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
