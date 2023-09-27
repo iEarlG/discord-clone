@@ -73,7 +73,10 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
                     <DropdownMenuSeparator />
                 )}
                 {isOwner && (
-                    <DropdownMenuItem className="text-rose-700 dark:text-rose-500 text-sm px-3 py-2 cursor-pointer">
+                    <DropdownMenuItem 
+                        className="text-rose-700 dark:text-rose-500 text-sm px-3 py-2 cursor-pointer"
+                        onClick={() => onOpen("Delete Server", { server })}
+                    >
                         Delete Server
                         <LogOut className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
