@@ -1,7 +1,7 @@
 "use client";
 
 import { MemberRole } from "@prisma/client";
-import { ChevronDownIcon, Plus, Settings, UserPlus, Users, XOctagon } from "lucide-react";
+import { ChevronDownIcon, LogOut, Plus, Settings, UserPlus, Users } from "lucide-react";
 
 import { ServerMembersAndProfile } from "@/types/type";
 import { useModalStore } from "@/hooks/useModalStore";
@@ -75,13 +75,16 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
                 {isOwner && (
                     <DropdownMenuItem className="text-rose-700 dark:text-rose-500 text-sm px-3 py-2 cursor-pointer">
                         Delete Server
-                        <XOctagon className="h-4 w-4 ml-auto" />
+                        <LogOut className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
                 )}
                 {isModerator || isGuest && (
-                    <DropdownMenuItem className="text-rose-700 dark:text-rose-500 text-sm px-3 py-2 cursor-pointer">
+                    <DropdownMenuItem 
+                        className="text-rose-700 dark:text-rose-500 text-sm px-3 py-2 cursor-pointer"
+                        onClick={() => onOpen("Leave Server", { server })}
+                    >
                         Leave Server
-                        <XOctagon className="h-4 w-4 ml-auto" />
+                        <LogOut className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
                 )}
             </DropdownMenuContent>
