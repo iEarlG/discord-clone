@@ -3,7 +3,7 @@
 import qs from "query-string";
 import { useState } from "react";
 import { MemberRole } from "@prisma/client";
-import { Check, Crown, Loader2, MoreVertical, Shield, ShieldCheck, ShieldQuestion, Star, UserX2 } from "lucide-react";
+import { Check, Crown, Loader2, MoreVertical, Shield, ShieldCheck, ShieldQuestion, UserX2, VenetianMask } from "lucide-react";
 
 import { ServerMembersAndProfile } from "@/types/type";
 import { useModalStore } from "@/hooks/useModalStore";
@@ -21,7 +21,7 @@ const roleIconIdentifiers = {
     "OWNER": <Crown className="h-4 w-4 ml-2 text-yellow-600" />,
     "ADMIN": <ShieldCheck className="h-4 w-4 ml-2 text-indigo-600" />,
     "MODERATOR": <Shield className="h-4 w-4 ml-2 text-cyan-600" />,
-    "GUEST": <Star className="h-4 w-4 ml-2 text-green-600" />,
+    "GUEST": <VenetianMask className="h-4 w-4 ml-2 text-green-600" />,
 }
 
 export const ManageMembersModal = () => {
@@ -129,7 +129,7 @@ export const ManageMembersModal = () => {
                                                             )}
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem onClick={() => onRoleChanged(member.id, "GUEST")}>
-                                                            <Star className="h-4 w-4 mr-2" />
+                                                            <VenetianMask className="h-4 w-4 mr-2" />
                                                             Guest
                                                             {member.role === "GUEST" && (
                                                                 <Check className="h-4 w-4 ml-auto" />
