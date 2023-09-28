@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import ServerHeader from "@/components/servers/ServerHeader";
 import { ServerSearch } from "@/components/servers/ServerSearch";
 import { ServerChannel } from "@/components/servers/ServerChannel";
+import { ChannelSection } from "@/components/servers/ChannelSection";
 
 interface ServerSidebarProps {
     serverId: string;
@@ -127,6 +128,14 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                             channelType={ChannelType.TEXT}
                             role={role}
                         />
+                        {textChannels.map((channel) => (
+                            <ChannelSection 
+                                key={channel.id}
+                                channel={channel}
+                                server={server}
+                                role={role}
+                            />
+                        ))}
                     </div>
                 )}
             </ScrollArea>
