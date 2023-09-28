@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Search } from "lucide-react";
 
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { useParams, useRouter } from "next/navigation";
 
 interface ServerSearchProps {
     data: {
@@ -21,8 +22,38 @@ interface ServerSearchProps {
 export const ServerSearch = ({
     data
 }: ServerSearchProps) => {
+    const router = useRouter();
+    const params = useParams();
+
     const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "k" && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            setIsOpen((isOpen) => !isOpen);
+        };
+      }
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
+    }, []);
     
+    const onRedirect = ({ id, type }: {id: string; type: "channel" | "member"}) => {
+        setIsOpen(false);
+
+        if (type === "channel") {
+           return (
+                router.push(`/servers/${params?.serverId}/channels/${id}`)
+           );
+        }
+
+        if (type === "member") {
+            return (
+                router.push(`/servers/${params?.serverId}/conversations/${id}`)
+            );
+        }
+    }
+
     return (
         <>
             <button 
@@ -51,7 +82,7 @@ export const ServerSearch = ({
                             <CommandGroup key={label} heading={label}>
                                 {data?.map(({ id, icon, name }) => {
                                     return (
-                                        <CommandItem key={id}>
+                                        <CommandItem key={id} onSelect={() => onRedirect({id, type})}>
                                            {icon}
                                            <span>{name}</span>
                                         </CommandItem>
