@@ -33,7 +33,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
                 </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 text-xs font-medium text-[#191413] dark:text-neutral-400 space-y-[2px]">
-                {isAdmin || isModerator || isOwner && (
+                {isOwner && isAdmin && isModerator || !isGuest && (
                     <DropdownMenuItem 
                         className="text-sm px-3 py-2 cursor-pointer"
                         onClick={() => onOpen("Create Channel", {server})}
@@ -42,7 +42,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
                         <Plus className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
                 )}
-                {isAdmin || isOwner && (
+                {isOwner && isAdmin || !isModerator && !isGuest && (
                     <DropdownMenuItem 
                         className="text-sm px-3 py-2 cursor-pointer"
                         onClick={() => onOpen("Edit Server", {server})}
@@ -51,7 +51,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
                         <Settings className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
                 )}
-                {isAdmin || isOwner && (
+                {isOwner && isAdmin || !isModerator && !isGuest && (
                     <DropdownMenuItem 
                         className="text-sm px-3 py-2 cursor-pointer"
                         onClick={() => onOpen("Manage Members", { server })}
@@ -60,7 +60,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
                         <Users className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
                 )}
-                {isAdmin || isModerator || isGuest || isOwner && (
+                {isOwner && isAdmin && isModerator && isGuest || (
                     <DropdownMenuItem 
                         className="text-indigo-600 dark:text-indigo-400 text-sm px-3 py-2 cursor-pointer"
                         onClick={() => onOpen("Invite", { server })}
@@ -69,7 +69,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
                         <UserPlus className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
                 )}
-                {isOwner && (
+                {isOwner && isAdmin || (
                     <DropdownMenuSeparator />
                 )}
                 {isOwner && (
@@ -81,7 +81,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({
                         <LogOut className="h-4 w-4 ml-auto" />
                     </DropdownMenuItem>
                 )}
-                {isModerator || isGuest && (
+                {isAdmin && isModerator && isGuest || !isOwner && (
                     <DropdownMenuItem 
                         className="text-rose-700 dark:text-rose-500 text-sm px-3 py-2 cursor-pointer"
                         onClick={() => onOpen("Leave Server", { server })}

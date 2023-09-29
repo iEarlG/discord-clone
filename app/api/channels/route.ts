@@ -32,7 +32,7 @@ export async function POST(
                     some: {
                         profileId: profile.id,
                         role: {
-                            in: [MemberRole.OWNER, MemberRole.ADMIN]
+                            in: [MemberRole.OWNER, MemberRole.ADMIN],
                         }
                     }
                 }
